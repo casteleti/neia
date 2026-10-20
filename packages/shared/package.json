@@ -1,0 +1,1 @@
+{"name":"@neia/shared","private":true,"version":"0.1.0","type":"module","exports":"./src/index.ts","scripts":{"build":"tsc --noEmit","lint":"tsc --noEmit","typecheck":"tsc --noEmit","test":"node -e \"console.log('Sem testes shared configurados ainda')\""}}

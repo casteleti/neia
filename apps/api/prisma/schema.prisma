@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MessageRole {
+  user
+  assistant
+}
+
+model Integration {
+  id             String           @id @default(uuid()) @db.Uuid
+  slug           String           @unique @db.VarChar(80)
+  installationId String           @unique @default(uuid()) @db.VarChar(120)
+  installationAliases String[]    @default([])
+  label          String           @db.VarChar(120)
+  context        String           @db.VarChar(40)
+  allowedOrigins String[]         @default([])
+  enabled        Boolean          @default(true)
+  themeJson      Json
+  suggestionsJson Json
+  sessions       VisitorSession[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model VisitorSession {
+  id             String        @id @default(uuid()) @db.Uuid
+  integrationId  String        @db.Uuid
+  integration    Integration   @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  credentialHash String        @unique @db.VarChar(64)
+  expiresAt      DateTime
+  conversations Conversation[]
+  createdAt      DateTime      @default(now())
+  @@index([integrationId, expiresAt])
+}
+
+model Conversation {
+  id             String        @id @default(uuid()) @db.Uuid
+  sessionId      String        @db.Uuid
+  session        VisitorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  integrationId  String        @db.Uuid
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+  messages       Message[]
+  @@index([sessionId, updatedAt])
+  @@index([integrationId])
+}
+
+model Message {
+  id             String        @id @default(uuid()) @db.Uuid
+  conversationId String        @db.Uuid
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String        @db.VarChar(8000)
+  status         String        @default("complete") @db.VarChar(20)
+  idempotencyKey String?       @db.VarChar(100)
+  replyToId      String?       @unique @db.Uuid
+  replyTo        Message?      @relation("MessageThread", fields: [replyToId], references: [id], onDelete: Cascade)
+  response       Message?      @relation("MessageThread")
+  createdAt      DateTime      @default(now())
+  @@unique([conversationId, idempotencyKey])
+  @@index([conversationId, createdAt])
+}
+
+model AdminUser {
+  id          String      @id @default(uuid()) @db.Uuid
+  email       String      @unique @db.VarChar(254)
+  passwordHash String     @db.VarChar(100)
+  createdAt   DateTime    @default(now())
+  lastLoginAt DateTime?
+  auditLogs   AuditLog[]
+}
+
+model AuditLog {
+  id         String     @id @default(uuid()) @db.Uuid
+  actorId    String?    @db.Uuid
+  actor      AdminUser? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String     @db.VarChar(80)
+  targetType String     @db.VarChar(80)
+  targetId   String?    @db.VarChar(120)
+  metadata   Json?
+  createdAt  DateTime   @default(now())
+  @@index([createdAt])
+}
+

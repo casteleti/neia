@@ -1,0 +1,6 @@
+{
+  "name": "@neia/web", "private": true, "version": "0.1.0", "type": "module",
+  "scripts": { "dev": "vite --host 0.0.0.0", "dev:host": "vite --host 0.0.0.0 --port 4174 --strictPort", "build": "tsc -b && vite build", "lint": "tsc --noEmit", "typecheck": "tsc --noEmit", "test": "node -e \"console.log('Use pnpm test:e2e para testar a interface')\"" },
+  "dependencies": { "@vitejs/plugin-react": "latest", "vite": "latest", "react": "latest", "react-dom": "latest", "lucide-react": "^0.468.0" },
+  "devDependencies": { "@types/react": "latest", "@types/react-dom": "latest" }
+}

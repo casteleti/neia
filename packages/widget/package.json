@@ -1,0 +1,1 @@
+{"name":"@neia/widget","private":true,"version":"0.1.0","type":"module","scripts":{"build":"vite build && node scripts/create-legacy-alias.mjs","lint":"tsc --noEmit","typecheck":"tsc --noEmit","test":"node -e \"console.log('Sem testes de widget configurados ainda')\""},"devDependencies":{"@vitejs/plugin-react":"latest","vite":"latest","typescript":"^5.8.3"}}

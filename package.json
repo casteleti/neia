@@ -1,0 +1,21 @@
+{
+  "name": "neia-chat",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "dev": "pnpm widget:build && pnpm --parallel --filter @neia/web --filter @neia/api dev",
+    "build": "pnpm widget:build && pnpm --filter @neia/shared build && pnpm --filter @neia/web build && pnpm --filter @neia/api build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm --filter @neia/api test",
+    "test:e2e": "playwright test",
+    "widget:build": "pnpm --filter @neia/widget build",
+    "db:migrate": "pnpm --filter @neia/api run db:migrate",
+    "db:seed": "pnpm --filter @neia/api run db:seed",
+    "db:admin:create": "pnpm --filter @neia/api run db:admin:create",
+    "db:cleanup": "pnpm --filter @neia/api run db:cleanup",
+    "db:studio": "pnpm --filter @neia/api exec prisma studio"
+  },
+  "devDependencies": { "typescript": "^5.8.3", "@types/node": "^22.14.0", "@playwright/test": "1.63.0", "@axe-core/playwright": "^4.10.2" }
+}

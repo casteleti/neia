@@ -1,0 +1,27 @@
+# Arquivos do pacote
+
+- `00-LEIA-PRIMEIRO.md`
+- `01-PRODUTO-E-ESCOPO.md`
+- `02-ARQUITETURA-E-DECISOES.md`
+- `03-CHECKLIST-E-ACEITE.md`
+- `04-EXPERIENCIA-E-DESIGN.md`
+- `05-CONTRATOS-API-E-DADOS.md`
+- `06-SEGURANCA-E-PRIVACIDADE.md`
+- `07-OPERACAO-E-DEPLOY.md`
+- `08-ROADMAP-IA-RAG.md`
+- `AGENTS.md`
+- `PROMPT-INICIAL-CODEX.md`
+- `assets/neia-identidade-original.png`
+- `assets/neia-referencia-chat.png`
+- `etapas/01-INICIALIZACAO.md`
+- `etapas/02-DESIGN-SYSTEM.md`
+- `etapas/03-CHAT-INTERATIVO.md`
+- `etapas/04-BANCO-E-SESSOES.md`
+- `etapas/05-PROVIDERS-E-STREAMING.md`
+- `etapas/06-WIDGET-INTEGRAVEL.md`
+- `etapas/07-CONTEXTOS-E-ADMIN.md`
+- `etapas/08-SEGURANCA-PRIVACIDADE.md`
+- `etapas/09-TESTES-E2E.md`
+- `etapas/10-REFINAMENTO-UX.md`
+- `etapas/11-BUILD-DISTRIBUICAO.md`
+- `etapas/12-AUDITORIA-FINAL.md`
