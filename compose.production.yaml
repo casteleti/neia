@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Configure POSTGRES_DB in Coolify}
+      POSTGRES_USER: ${POSTGRES_USER:?Configure POSTGRES_USER in Coolify}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD in Coolify}
+    volumes:
+      - neia-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    environment:
+      NODE_ENV: production
+      APP_BASE_URL: https://neia.daksa.com.br
+      API_BASE_URL: https://neia.daksa.com.br
+      API_PORT: "3001"
+      DATABASE_URL: ${DATABASE_URL:?Configure DATABASE_URL with the internal db host}
+      SESSION_SECRET: ${SESSION_SECRET:?Generate a unique secret in Coolify}
+      ADMIN_COOKIE_SECRET: ${ADMIN_COOKIE_SECRET:?Generate a separate unique secret in Coolify}
+      ADMIN_ALLOWED_ORIGINS: https://neia.daksa.com.br
+      ALLOWED_ORIGINS: https://neia.daksa.com.br
+      TRUST_PROXY: "true"
+      AI_PROVIDER: ${AI_PROVIDER:-demo}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-haiku-5-5}
+      DATA_RETENTION_DAYS: ${DATA_RETENTION_DAYS:-30}
+    expose:
+      - "3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  neia-postgres-data:
